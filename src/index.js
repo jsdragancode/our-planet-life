@@ -12,16 +12,19 @@ import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
 import SignupPage from "views/SignupPage/SignupPage.js";
 
+import PrivateRoute from './helpers/PrivateRoute';
+import PublicRoute from './helpers/PublicRoute';
+
 var hist = createBrowserHistory();
 
 ReactDOM.render(
   <Router history={hist}>
     <Switch>
-      <Route path="/landing-page" component={LandingPage} />
-      <Route path="/profile-page" component={ProfilePage} />
-      <Route path="/login-page" component={LoginPage} />
-      <Route path="/signup-page" component={SignupPage} />
-      <Route path="/" component={Components} />
+      <Route path="/" exact component={Components} />
+      <PublicRoute path="/signup-page" exact component={SignupPage}/>
+      <PublicRoute path="/login-page" exact component={LoginPage}/>
+      <PrivateRoute exact path="/profile-page" component={ProfilePage} />
+      <PrivateRoute exact path="/landing-page" component={LandingPage} />
     </Switch>
   </Router>,
   document.getElementById("root")

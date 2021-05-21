@@ -48,7 +48,7 @@ const RegularButton = React.forwardRef((props, ref) => {
     [className]: className,
   });
   return (
-    <Button {...rest} ref={ref} className={btnClasses}>
+    <Button {...rest} ref={ref} className={btnClasses} type={props.type}>
       {children}
     </Button>
   );

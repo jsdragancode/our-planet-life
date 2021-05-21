@@ -20,28 +20,42 @@ import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
 
+import firebase, {auth, db} from "../../firebase/Firebase";
+
 const useStyles = makeStyles(styles);
 
-export default function HeaderLinks(props) {
+export default function HeaderMainLinks(props) {
   const classes = useStyles();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    firebase.auth().signOut().then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+      alert(error.message);
+    });
+    localStorage.clear();
+    window.location.reload(false);
+  }
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
         <CustomDropdown
           noLiPadding
-          buttonText="Join Us"
+          buttonText="Account"
           buttonProps={{
             className: classes.navLink,
             color: "transparent",
           }}
           buttonIcon={Apps}
           dropdownList={[
-            <Link to="/login-page" className={classes.dropdownLink}>
-              Login
-            </Link>,
-            <Link to="/signup-page" className={classes.dropdownLink}>
-              Sign up
-            </Link>,
+            <a href="/profile-page" className={classes.dropdownLink}>
+              Profile
+            </a>,
+            <p className={classes.dropdownLink} onClick={handleLogout}>
+              Logout
+            </p>,
           ]}
         />
       </ListItem>

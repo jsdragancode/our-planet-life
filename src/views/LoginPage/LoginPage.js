@@ -21,12 +21,52 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
+import firebase, {auth, db} from "../../firebase/Firebase";
+
 import image from "assets/img/bg7.jpg";
 
 const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  const [fieldStatus, setFieldStatus] = React.useState(0);
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setFieldStatus("");
+    setErrorMessage("");
+    if(checkFields()) {
+      auth.signInWithEmailAndPassword(email, password) 
+      .then(async res => {
+        console.log('sign in succeeded.')
+        const token = await Object.entries(res.user)[5][1].b;
+        localStorage.setItem('userId', res.user.uid);
+        localStorage.setItem('userEmail', res.user.email);
+        localStorage.setItem('token', token);
+        props.history.push('/profile-page');
+      })
+      .catch(err => {
+        setErrorMessage(err.message);
+      })
+    }
+  }
+
+  const checkFields = () => {
+    const reqEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    setFieldStatus(0);
+    if(!email || !password) {
+      setFieldStatus(1);
+    } else if(!reqEmail.test(String(email).toLowerCase())) {
+        setFieldStatus(2);
+    } else {
+      return true;
+    }
+    return false;
+  }
+
   setTimeout(function () {
     setCardAnimation("");
   }, 700);
@@ -88,21 +128,6 @@ export default function LoginPage(props) {
                   </CardHeader>
                   {/* <p className={classes.divider}>Or Be Classical</p> */}
                   <CardBody>
-                    {/* <CustomInput
-                      labelText="First Name..."
-                      id="first"
-                      formControlProps={{
-                        fullWidth: true,
-                      }}
-                      inputProps={{
-                        type: "text",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <People className={classes.inputIconsColor} />
-                          </InputAdornment>
-                        ),
-                      }}
-                    /> */}
                     <CustomInput
                       labelText="Email..."
                       id="email"
@@ -111,6 +136,8 @@ export default function LoginPage(props) {
                       }}
                       inputProps={{
                         type: "email",
+                        value: email,
+                        onChange: e => {setEmail(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <Email className={classes.inputIconsColor} />
@@ -126,6 +153,8 @@ export default function LoginPage(props) {
                       }}
                       inputProps={{
                         type: "password",
+                        value: password,
+                        onChange: e => {setPassword(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <Icon className={classes.inputIconsColor}>
@@ -137,8 +166,23 @@ export default function LoginPage(props) {
                       }}
                     />
                   </CardBody>
+                  {
+                    fieldStatus === 1 && (
+                    <p className={classes.divider} style={{color: 'red'}}>Please fill out all fields.</p>
+                   )
+                  }
+                  {
+                    fieldStatus === 2 && (
+                    <p className={classes.divider} style={{color: 'red'}}>Please check your email format again.</p>
+                    )
+                  }
+                  {
+                    errorMessage && (
+                    <p className={classes.divider} style={{color: 'red'}}>{errorMessage}</p>
+                    )
+                  }
                   <CardFooter className={classes.cardFooter}>
-                    <Button simple color="primary" size="lg">
+                    <Button simple color="primary" size="lg" onClick={handleLogin}>
                       Log in
                     </Button>
                   </CardFooter>

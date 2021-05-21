@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -29,13 +29,71 @@ import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
 import image from "assets/img/bg7.jpg";
 
+import firebase, {auth, db} from "../../firebase/Firebase";
+
 const useStyles = makeStyles(styles);
 
 export default function SignupPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  // fieldStatus value is same as => 0: good, 1: empty field, 2: wrong email, 3: wrong confirm password
+  const [fieldStatus, setFieldStatus] = React.useState(0);
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [company, setCompany] = React.useState("");
+  const [address, setAddress] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [country, setCountry] = React.useState("");
+  const [post, setPost] = React.useState("");
+
   setTimeout(function () {
     setCardAnimation("");
   }, 700);
+
+  useEffect(() => {
+  },[] );
+
+  const handleSignup = (e) => {
+    e.preventDefault();
+    setFieldStatus("");
+    setErrorMessage("");
+    const checkFieldsValue = checkFields();
+    if(checkFieldsValue) {
+      auth.createUserWithEmailAndPassword(email, password)
+      .then(async res => {
+          console.log('sign up succeeded.')
+          const token = await Object.entries(res.user)[5][1].b;
+          localStorage.setItem('userId', res.user.uid);
+          localStorage.setItem('userEmail', res.user.email);
+          localStorage.setItem('firstName', firstName);
+          localStorage.setItem('lastName', lastName);
+          localStorage.setItem('token', token);
+          props.history.push('/profile-page');
+      })
+      .catch(err => {
+        setErrorMessage(err.message);
+      })
+    }
+  }
+
+  const checkFields = () => {
+    const reqEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    setFieldStatus(0);
+    if(!firstName || !lastName || !email || !password || !confirmPassword || !company || !address || !city || !country || !post) {
+      setFieldStatus(1);
+    } else if(!reqEmail.test(String(email).toLowerCase())) {
+        setFieldStatus(2);
+    } else if(password !== confirmPassword) {
+      setFieldStatus(3);
+    } else {
+      return true;
+    }
+    return false;
+  }
+
   const classes = useStyles();
   const { ...rest } = props;
   return (
@@ -92,7 +150,6 @@ export default function SignupPage(props) {
                       </Button>
                     </div> */}
                   </CardHeader>
-                  {/* <p className={classes.divider}>Or Be Classical</p> */}
                   <CardBody>
                     <CustomInput
                       labelText="First Name..."
@@ -102,6 +159,8 @@ export default function SignupPage(props) {
                       }}
                       inputProps={{
                         type: "text",
+                        value: firstName,
+                        onChange: e => {setFirstName(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <People className={classes.inputIconsColor} />
@@ -117,6 +176,8 @@ export default function SignupPage(props) {
                       }}
                       inputProps={{
                         type: "text",
+                        value: lastName,
+                        onChange: e => {setLastName(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <People className={classes.inputIconsColor} />
@@ -132,6 +193,8 @@ export default function SignupPage(props) {
                       }}
                       inputProps={{
                         type: "email",
+                        value: email,
+                        onChange: e => {setEmail(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <Email className={classes.inputIconsColor} />
@@ -147,6 +210,8 @@ export default function SignupPage(props) {
                       }}
                       inputProps={{
                         type: "password",
+                        value: password,
+                        onChange: e => {setPassword(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <Icon className={classes.inputIconsColor}>
@@ -165,6 +230,8 @@ export default function SignupPage(props) {
                       }}
                       inputProps={{
                         type: "password",
+                        value: confirmPassword,
+                        onChange: e => {setConfirmPassword(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <Icon className={classes.inputIconsColor}>
@@ -184,6 +251,8 @@ export default function SignupPage(props) {
                       }}
                       inputProps={{
                         type: "text",
+                        value: company,
+                        onChange: e => {setCompany(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <Business className={classes.inputIconsColor} />
@@ -200,6 +269,8 @@ export default function SignupPage(props) {
                       }}
                       inputProps={{
                         type: "text",
+                        value: address,
+                        onChange: e => {setAddress(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <Home className={classes.inputIconsColor} />
@@ -217,6 +288,8 @@ export default function SignupPage(props) {
                       }}
                       inputProps={{
                         type: "text",
+                        value: city,
+                        onChange: e => {setCity(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <LocationCity className={classes.inputIconsColor} />
@@ -233,6 +306,8 @@ export default function SignupPage(props) {
                       }}
                       inputProps={{
                         type: "text",
+                        value: country,
+                        onChange: e => {setCountry(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <Language className={classes.inputIconsColor} />
@@ -250,6 +325,8 @@ export default function SignupPage(props) {
                       }}
                       inputProps={{
                         type: "text",
+                        value: post,
+                        onChange: e => {setPost(e.target.value);},
                         endAdornment: (
                           <InputAdornment position="end">
                             <AllInbox className={classes.inputIconsColor} />
@@ -259,8 +336,28 @@ export default function SignupPage(props) {
                       }}
                     />
                   </CardBody>
+                  {
+                    fieldStatus === 1 && (
+                    <p className={classes.divider} style={{color: 'red'}}>Please fill out all fields.</p>
+                   )
+                  }
+                  {
+                    fieldStatus === 2 && (
+                    <p className={classes.divider} style={{color: 'red'}}>Please check your email format again.</p>
+                    )
+                  }
+                  {
+                    fieldStatus === 3 && (
+                    <p className={classes.divider} style={{color: 'red'}}>Please check your confirm password again.</p>
+                    )
+                  }
+                  {
+                    errorMessage && (
+                    <p className={classes.divider} style={{color: 'red'}}>{errorMessage}</p>
+                    )
+                  }
                   <CardFooter className={classes.cardFooter}>
-                    <Button simple color="primary" size="lg">
+                    <Button simple color="primary" size="lg" type="submit" onClick={handleSignup}>
                       Get started
                     </Button>
                   </CardFooter>

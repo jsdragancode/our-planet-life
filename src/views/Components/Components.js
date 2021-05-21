@@ -15,6 +15,7 @@ import Button from "components/CustomButtons/Button.js";
 import Parallax from "components/Parallax/Parallax.js";
 // sections for this page
 import HeaderLinks from "components/Header/HeaderLinks.js";
+import HeaderMainLinks from "components/Header/HeaderMainLinks.js";
 import SectionBasics from "./Sections/SectionBasics.js";
 import SectionNavbars from "./Sections/SectionNavbars.js";
 import SectionTabs from "./Sections/SectionTabs.js";
@@ -30,16 +31,31 @@ import SectionCompletedExamples from "./Sections/SectionCompletedExamples.js";
 
 import styles from "assets/jss/material-kit-react/views/components.js";
 
+import firebase, {auth, db} from "../../firebase/Firebase";
+
 const useStyles = makeStyles(styles);
+
+const handleLogout = (e) => {
+  e.preventDefault();
+  firebase.auth().signOut().then(() => {
+    // Sign-out successful.
+  }).catch((error) => {
+    // An error happened.
+    alert(error.message);
+  });
+  localStorage.clear();
+  window.location.reload(false);
+}
 
 export default function Components(props) {
   const classes = useStyles();
   const { ...rest } = props;
+  const loginStatus = localStorage.getItem('token');
   return (
     <div>
       <Header
         brand="Our Planet"
-        rightLinks={<HeaderLinks />}
+        rightLinks={loginStatus ? <HeaderMainLinks /> : <HeaderLinks />}
         fixed
         color="transparent"
         changeColorOnScroll={{
@@ -76,7 +92,7 @@ export default function Components(props) {
         {/* <SectionLogin /> */}
         <GridItem md={12} className={classes.textCenter}>
           <Link to={"/login-page"} className={classes.link}>
-            <Button color="primary" size="lg" simple>
+            <Button color="primary" size="lg" simple onClick={handleLogout}>
               View Login Page
             </Button>
           </Link>

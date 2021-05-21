@@ -13,7 +13,7 @@ import Footer from "components/Footer/Footer.js";
 import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
+import HeaderMainLinks from "components/Header/HeaderMainLinks.js";
 import NavPills from "components/NavPills/NavPills.js";
 import Parallax from "components/Parallax/Parallax.js";
 
@@ -48,7 +48,7 @@ export default function ProfilePage(props) {
       <Header
         color="transparent"
         brand="Material Kit React"
-        rightLinks={<HeaderLinks />}
+        rightLinks={<HeaderMainLinks />}
         fixed
         changeColorOnScroll={{
           height: 200,
