@@ -1,4 +1,7 @@
 import React, {useEffect} from "react";
+
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+import Datetime from "react-datetime";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -11,6 +14,8 @@ import Home from "@material-ui/icons/Home";
 import LocationCity from "@material-ui/icons/LocationCity";
 import Language from "@material-ui/icons/Language";
 import AllInbox from "@material-ui/icons/AllInbox";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
 
 // core components
 import Header from "components/Header/Header.js";
@@ -56,7 +61,7 @@ export default function SignupPage(props) {
   useEffect(() => {
   },[] );
 
-  const handleSignup = (e) => {
+  const handleSignup = e => {
     e.preventDefault();
     setFieldStatus("");
     setErrorMessage("");
@@ -77,6 +82,10 @@ export default function SignupPage(props) {
         setErrorMessage(err.message);
       })
     }
+  }
+
+  const selectCountry = val => {
+    setCountry(val)
   }
 
   const checkFields = () => {
@@ -316,6 +325,21 @@ export default function SignupPage(props) {
                         autoComplete: "off",
                       }}
                     />
+                    <GridContainer style={{marginTop: '-40px', opacity: '0'}}>
+                      <GridItem xs={12} sm={12} md={12}>
+                        <FormControl fullWidth>
+                          {/* <Datetime
+                            inputProps={{ placeholder: "Country" }}
+                          /> */}
+                          <CountryDropdown
+                            value={country}
+                            onChange={(val) => selectCountry(val)} 
+                            inputProps={{ placeholder: "Country" }}
+                            priorityOptions={true}
+                          />
+                        </FormControl>
+                      </GridItem>
+                    </GridContainer>
 
                     <CustomInput
                       labelText="Post Code"
