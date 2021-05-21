@@ -6,6 +6,12 @@ import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Email from "@material-ui/icons/Email";
 import People from "@material-ui/icons/People";
+import Business from "@material-ui/icons/Business";
+import Home from "@material-ui/icons/Home";
+import LocationCity from "@material-ui/icons/LocationCity";
+import Language from "@material-ui/icons/Language";
+import AllInbox from "@material-ui/icons/AllInbox";
+
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -25,7 +31,7 @@ import image from "assets/img/bg7.jpg";
 
 const useStyles = makeStyles(styles);
 
-export default function LoginPage(props) {
+export default function SignupPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   setTimeout(function () {
     setCardAnimation("");
@@ -51,11 +57,11 @@ export default function LoginPage(props) {
       >
         <div className={classes.container}>
           <GridContainer justify="center">
-            <GridItem xs={12} sm={12} md={4}>
+            <GridItem xs={12} sm={12} md={5}>
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
                   <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Login</h4>
+                    <h4>Sign up</h4>
                     {/* <div className={classes.socialLine}>
                       <Button
                         justIcon
@@ -88,7 +94,7 @@ export default function LoginPage(props) {
                   </CardHeader>
                   {/* <p className={classes.divider}>Or Be Classical</p> */}
                   <CardBody>
-                    {/* <CustomInput
+                    <CustomInput
                       labelText="First Name..."
                       id="first"
                       formControlProps={{
@@ -102,7 +108,22 @@ export default function LoginPage(props) {
                           </InputAdornment>
                         ),
                       }}
-                    /> */}
+                    />
+                    <CustomInput
+                      labelText="Last Name..."
+                      id="last"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <People className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
                     <CustomInput
                       labelText="Email..."
                       id="email"
@@ -136,10 +157,111 @@ export default function LoginPage(props) {
                         autoComplete: "off",
                       }}
                     />
+                    <CustomInput
+                      labelText="Confirm Password"
+                      id="pass"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "password",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Icon className={classes.inputIconsColor}>
+                              lock_outline
+                            </Icon>
+                          </InputAdornment>
+                        ),
+                        autoComplete: "off",
+                      }}
+                    />
+
+                    <CustomInput
+                      labelText="Company Name"
+                      id="company"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Business className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        ),
+                        autoComplete: "off",
+                      }}
+                    />
+                    <CustomInput
+                      labelText="Address"
+                      id="address"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Home className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        ),
+                        autoComplete: "off",
+                      }}
+                    />
+
+                    <CustomInput
+                      labelText="City"
+                      id="city"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <LocationCity className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        ),
+                        autoComplete: "off",
+                      }}
+                    />
+                    <CustomInput
+                      labelText="Country"
+                      id="coutry"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Language className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        ),
+                        autoComplete: "off",
+                      }}
+                    />
+
+                    <CustomInput
+                      labelText="Post Code"
+                      id="post"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <AllInbox className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        ),
+                        autoComplete: "off",
+                      }}
+                    />
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
                     <Button simple color="primary" size="lg">
-                      Log in
+                      Get started
                     </Button>
                   </CardFooter>
                 </form>

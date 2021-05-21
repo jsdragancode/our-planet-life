@@ -65,6 +65,11 @@ const headerStyle = {
       background: "transparent",
     },
   },
+  logo: {
+    width: "120px",
+    height: "100%",
+    cursor: "pointer",
+  },
   appResponsive: {
     margin: "20px 10px",
   },
